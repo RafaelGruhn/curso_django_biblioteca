@@ -9,6 +9,7 @@
             </div>
             <div class="col-md-8">
             
+<<<<<<< HEAD
             <table class="table table-bordered">
 				<thead>
 					<tr>
@@ -18,6 +19,16 @@
 						</th>
 						<th>
 							Autor
+=======
+            <table class="table">
+				<thead>
+					<tr>
+						<th>
+							Autor
+						</th>
+						<th>
+                            Título
+>>>>>>> origin/master
 						</th>
 						<th>
 							Editora
@@ -25,23 +36,34 @@
 						<th>
 							Data de publicação
 						</th>
+<<<<<<< HEAD
 						<th>
 							Editar
 						</th>
 						<th>
 							Excluir
 						</th>
+=======
+>>>>>>> origin/master
 					</tr>
 				</thead>
 
                 {% for livro in livros%}
 					<tr>
+<<<<<<< HEAD
 						
 						<td>
 							{{ livro.titulo }}
 						</td>
 						<td>
 							{{ livro.autor.nome }}
+=======
+						<td>
+							{{ livro.autor.nome }}
+						</td>
+						<td>
+							{{ livro.titulo }}
+>>>>>>> origin/master
 						</td>
 						<td>
 							{{ livro.editora }}
@@ -49,6 +71,7 @@
 						<td>
 							{{ livro.data }}
 						</td>
+<<<<<<< HEAD
 						<td>
 							<a class="btn btn-primary" href="{% url 'editarLivro' livro.pk %}">
 								Editar
@@ -59,6 +82,8 @@
 								Excluir
 							</a> 
 						</td>
+=======
+>>>>>>> origin/master
 					</tr>
 
                 {% empty %}

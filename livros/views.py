@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from django.shortcuts import render, get_object_or_404, redirect
+=======
+from django.shortcuts import render
+>>>>>>> origin/master
 from django.core.paginator import Paginator, InvalidPage
 
 from livros import models
@@ -27,6 +31,7 @@ def CadastroLivro(request):
         #Verifica se o formulário é válido
         if formLivro.is_valid():
             formLivro.save()
+<<<<<<< HEAD
             return redirect("home")
         
         else:
@@ -66,3 +71,13 @@ def ExcluirLivro(request, pk):
     return redirect("home")
 
 
+=======
+            return home(request)
+        
+        else:
+            return render(request, 'cadastro.html', {"form": LivroForm(request.POST)})
+
+
+    else:
+        return render(request, "cadastroLivros.html", {'form': LivroForm()})
+>>>>>>> origin/master

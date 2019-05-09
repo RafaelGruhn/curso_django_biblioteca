@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect
+=======
+from django.shortcuts import render
+>>>>>>> origin/master
 
 from biblioteca.forms import UsuarioForm
 
@@ -13,7 +17,11 @@ def CadastroUsuario(request):
         #Verifica se o formulário é válido
         if formUsuario.is_valid():
             formUsuario.save()
+<<<<<<< HEAD
             return redirect("home")
+=======
+            return render(request, "home.html", {})
+>>>>>>> origin/master
         
         else:
             return render(request, 'cadastro.html', {"form": UsuarioForm(request.POST)})
