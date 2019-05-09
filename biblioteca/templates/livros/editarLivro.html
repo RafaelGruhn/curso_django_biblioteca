@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+ <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+            <h2>Editar Livro</h2>
+
+<form action="" method="POST" enctype = "multipart/form-data" role="form">
+    {% csrf_token %}
+    <input type="hidden" name="pk" id="pk" value="{{ pk }}"/>
+
+    {{ form|crispy }}
+
+    <button type="submit" class="btn btn-primary btn-block">
+        Editar
+    </button>
+</form>
+
+            </div>
+            <div class="col-md-2">
+            </div>
+            
+        </div>
+    </div>         
+
+{% endblock content %}
