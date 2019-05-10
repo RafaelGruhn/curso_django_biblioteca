@@ -13,32 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-<<<<<<< HEAD
 from django.urls import path
 from django.contrib import admin
 
 from livros.views import home, CadastroLivro,EditarLivro,ExcluirLivro
-=======
-from django.conf.urls import url
-from django.contrib import admin
-
-from livros.views import home, CadastroLivro
->>>>>>> origin/master
-from users.views import CadastroUsuario
+from users.views import CadastroUsuario, ListarUsuarios, EditarUsuario, Login
 
 
 urlpatterns = [
-<<<<<<< HEAD
-    path('', home, name='home'),
+    path('', Login, name = 'login'),
+    path('home/', home, name='home'),
     path('users/cadastro_usuario/', CadastroUsuario, name='cadastroUsuario'),
+    path('users/listar_usuarios/', ListarUsuarios.as_view(), name='listarUsuarios'),
+    path('users/<int:pk>/editar_usuario/', EditarUsuario, name='editarUsuario'),
     path('livros/cadastro_livro/', CadastroLivro, name='cadastroLivro'),
     path('livros/<int:pk>/editar_livro/', EditarLivro, name='editarLivro'),
     path('livros/<int:pk>/excluir/',ExcluirLivro, name='excluirLivro'),
     path('admin/', admin.site.urls),
-=======
-    url(r'^$', home, name='home'),
-    url(r'^users/cadastro_usuario/', CadastroUsuario, name='cadastroUsuario'),
-    url(r'^livros/cadastro_livro/', CadastroLivro, name='cadastroLivro'),
-    url(r'^admin/', admin.site.urls),
->>>>>>> origin/master
 ]

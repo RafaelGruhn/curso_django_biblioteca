@@ -14,16 +14,16 @@
 					<tr>
 						
 						<th>
-                            Título
+                            Nome
 						</th>
 						<th>
-							Autor
+							Primeiro Nome
 						</th>
 						<th>
-							Editora
+							Ultimo Nome
 						</th>
 						<th>
-							Data de publicação
+							Data de cadastro
 						</th>
 						<th>
 							Editar
@@ -34,28 +34,28 @@
 					</tr>
 				</thead>
 
-                {% for livro in livros%}
+                {% for usuario in object_list %}
 					<tr>
 						
 						<td>
-							{{ livro.titulo }}
+							{{ usuario.username }}
 						</td>
 						<td>
-							{{ livro.autor.nome }}
+							{{ usuario.first_name }}
 						</td>
 						<td>
-							{{ livro.editora }}
+							{{ usuario.last_name }}
 						</td>
 						<td>
-							{{ livro.data }}
+							{{ usuario.update_on }}
 						</td>
 						<td>
-							<a class="btn btn-primary" href="{% url 'editarLivro' livro.pk %}">
+							<a class="btn btn-primary" href="{% url 'editarUsuario' pk=usuario.pk %}">
 								Editar
 							</a> 
 						</td>
 						<td>
-							<a class="btn btn-danger" href="{% url 'excluirLivro' livro.pk %}">
+							<a class="btn btn-danger" href="#">
 								Excluir
 							</a> 
 						</td>
