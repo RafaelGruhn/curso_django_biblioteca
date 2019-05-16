@@ -8,7 +8,7 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
-            
+                <h2> Livros retirados pelo usuario </h2>
             <table class="table table-bordered">
 				<thead>
 					<tr>
@@ -26,16 +26,11 @@
 							Data de publicação
 						</th>
 						<th>
-							Reservar livro
-						</th>
-						{% if user.is_staff %}
-						<th>
 							Editar
 						</th>
 						<th>
 							Excluir
 						</th>
-						{% endif %}
 					</tr>
 				</thead>
 
@@ -55,12 +50,6 @@
 							{{ livro.data }}
 						</td>
 						<td>
-							<a class="btn btn-success" href="{% url 'reservarLivro' livro.pk %}">
-								Reservar
-							</a> 
-						</td>
-						{% if user.is_staff %}
-						<td>
 							<a class="btn btn-primary" href="{% url 'editarLivro' livro.pk %}">
 								Editar
 							</a> 
@@ -70,7 +59,6 @@
 								Excluir
 							</a> 
 						</td>
-						{% endif %}
 					</tr>
 
                 {% empty %}

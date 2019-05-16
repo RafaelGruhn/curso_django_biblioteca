@@ -9,7 +9,6 @@ from biblioteca.forms import UsuarioForm, EditUsuarioForm, LoginForm
 # Create your views here.
 
 def CadastroUsuario(request):
-
     if request.method == 'POST':
         #Cria o formulário com os dados preenchidos 
         formUsuario = UsuarioForm(request.POST)
@@ -18,14 +17,13 @@ def CadastroUsuario(request):
         if formUsuario.is_valid():
             user = Usuario
             user = formUsuario.save(commit=False)
-            
+            user.set_password(request.POST["password"])
             user.save()
             print(user.password)
-            return redirect("home")
+            return redirect("listarUsuarios")
         
         else:
             return render(request, 'usuarios/cadastroUsuario.html', {"form": UsuarioForm(request.POST)})
-
 
     else:
         context = {"form": UsuarioForm()}
@@ -44,12 +42,14 @@ def EditarUsuario(request, pk):
     if request.method == 'POST':
         #Cria o formulário com os dados preenchidos 
         formUsuario = EditUsuarioForm(request.POST)
-        usuario = formUsuario.save(commit = False)
         #Verifica se o formulário é válido
-        if usuario is not None:
-            
+        if formUsuario.is_valid():
+            usuario = Usuario()
+            usuario = formUsuario.save(commit = False)
             usuario.pk = request.POST["pk"]
-            usuario.save()
+            usuario.set_password(request.POST["password"])
+            print(usuario.pk)
+            usuario.update()
             return redirect("listarUsuarios")
         
         return render(request, 'usuarios/editarUsuario.html', {"form": EditUsuarioForm(request.POST), 'pk': request.POST["pk"]})

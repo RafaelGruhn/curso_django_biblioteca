@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, InvalidPage
 from livros import models
 
 from biblioteca.forms import LivroForm
+from users.models import Usuario
 
 # Create your views here.
 
@@ -31,7 +32,6 @@ def CadastroLivro(request):
         
         else:
             return render(request, 'livros/cadastroLivro.html', {"form": LivroForm(request.POST)})
-
 
     else:
         return render(request, "livros/cadastroLivro.html", {'form': LivroForm()})
@@ -65,4 +65,14 @@ def ExcluirLivro(request, pk):
     livro.delete()
     return redirect("home")
 
+
+def ReservarLivro(request, pk):
+    livro = get_object_or_404(models.Livro, pk=pk)
+    user = get_object_or_404(Usuario, pk=request.user.pk)
+    if livro.retirar_livro():
+        livro.usuario = user
+        livro.save()
+        return render(request, "usuarios/usuario_livros.html", {"livros":user.livros})
+    
+    return redirect("home", {"test": "dfds"})
 
