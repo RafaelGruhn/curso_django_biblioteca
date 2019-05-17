@@ -13,11 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 
-from livros.views import home, CadastroLivro, EditarLivro, ExcluirLivro, ReservarLivro
-from users.views import CadastroUsuario, ListarUsuarios, EditarUsuario, Login
+from livros.views import home, CadastroLivro, EditarLivro, ExcluirLivro, ReservarLivro, DevolverLivro
+from users.views import CadastroUsuario, ListarUsuarios, EditarUsuario, Login, ListarLivrosUsuario
 
 
 urlpatterns = [
@@ -26,9 +26,12 @@ urlpatterns = [
     path('users/cadastro_usuario/', CadastroUsuario, name='cadastroUsuario'),
     path('users/listar_usuarios/', ListarUsuarios.as_view(), name='listarUsuarios'),
     path('users/<int:pk>/editar_usuario/', EditarUsuario, name='editarUsuario'),
+    path('users/devolver_livro/', DevolverLivro, name='devolverLivro'),
+    path('users/listar_livros/', ListarLivrosUsuario, name='lista_livros_usuario'),
     path('livros/cadastro_livro/', CadastroLivro, name='cadastroLivro'),
     path('livros/<int:pk>/editar_livro/', EditarLivro, name='editarLivro'),
     path('livros/<int:pk>/excluir/',ExcluirLivro, name='excluirLivro'),
     path('livros/<int:pk>/reservar_livro/', ReservarLivro, name='reservarLivro'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]

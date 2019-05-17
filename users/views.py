@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, InvalidPage
 
 from .models import Usuario
-
 from biblioteca.forms import UsuarioForm, EditUsuarioForm, LoginForm
 
 # Create your views here.
@@ -19,6 +20,8 @@ def CadastroUsuario(request):
             user = formUsuario.save(commit=False)
             user.set_password(request.POST["password"])
             user.save()
+            u = User.objects.create_user(username = user.username, password = request.POST["password"])
+            u.save()
             print(user.password)
             return redirect("listarUsuarios")
         
@@ -58,6 +61,21 @@ def EditarUsuario(request, pk):
         usuario = get_object_or_404(Usuario, pk = pk)
         context = {"form": EditUsuarioForm(instance = usuario), 'pk': pk}
         return render(request, 'usuarios/editarUsuario.html', context)
+
+
+def ListarLivrosUsuario(request):
+    ### Lista de livros locados pelo usuario atual
+    user = get_object_or_404(Usuario, pḱ = request.user.pk)
+    livros = user.livros_retirados.all().filter(status = False)
+    page = request.GET.get("page", 1)
+    paginator = Paginator(livros, 5)
+    total = paginator.count
+    try:
+        livros2 = paginator.page(page)
+    except Exception as e:
+        print(e)
+        livros2 = paginator.page(1)
+    return render(request, "usuarios/usuario_livros.html", {"livros": livros2})
 
 
 def Login(request):

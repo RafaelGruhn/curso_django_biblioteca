@@ -33,7 +33,8 @@ class EditUsuarioForm(forms.ModelForm):
 class LivroForm(forms.ModelForm):
     class Meta:
         model = Livro
-        fields = ('__all__')
+        #fields = ('__all__')
+        exclude = ('user',)
 
 
 class LoginForm(forms.ModelForm):

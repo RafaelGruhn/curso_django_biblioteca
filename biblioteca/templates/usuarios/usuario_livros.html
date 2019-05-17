@@ -26,10 +26,7 @@
 							Data de publicação
 						</th>
 						<th>
-							Editar
-						</th>
-						<th>
-							Excluir
+							Devolver
 						</th>
 					</tr>
 				</thead>
@@ -50,13 +47,8 @@
 							{{ livro.data }}
 						</td>
 						<td>
-							<a class="btn btn-primary" href="{% url 'editarLivro' livro.pk %}">
-								Editar
-							</a> 
-						</td>
-						<td>
-							<a class="btn btn-danger" href="{% url 'excluirLivro' livro.pk %}">
-								Excluir
+							<a class="btn btn-success" href="{% url 'devolverLivro' livro.pk %}">
+								Devolver
 							</a> 
 						</td>
 					</tr>

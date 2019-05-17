@@ -71,8 +71,43 @@ def ReservarLivro(request, pk):
     user = get_object_or_404(Usuario, pk=request.user.pk)
     if livro.retirar_livro():
         livro.usuario = user
+        livro.status = False
         livro.save()
-        return render(request, "usuarios/usuario_livros.html", {"livros":user.livros})
-    
-    return redirect("home", {"test": "dfds"})
+        ### Lista de livros locados pelo usuario atual
+        return redirect("lista_livros_usuario")
+    return redirect("home")
+
+
+def DevolverLivro(request, pk):
+    livro = get_object_or_404(models.Livro, pk=pk)
+    user = get_object_or_404(Usuario, pk=request.user.pk)
+    if livro.usuario == user:
+        if livro.devolver_livro():
+            livro.usuario = None
+            livro.save()
+            return redirect("lista_livros_usuario")
+    return redirect("home")
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

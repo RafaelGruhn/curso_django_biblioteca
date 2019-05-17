@@ -24,7 +24,10 @@ class Livro(models.Model):
     data = models.DateField(null = False, default=datetime.date.today)
     status = models.BooleanField("Retirado: ", choices = CHOICES_LIVRO_STATUS)
     autor = models.ForeignKey(Autor, related_name = 'livros',on_delete = models.PROTECT)
-    user = models.ForeignKey(Usuario, related_name = 'livros_retirados', verbose_name="Usuario", on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        Usuario, related_name = 'livros_retirados',
+        verbose_name="Usuario", blank = True, null = True,
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return self.titulo
@@ -33,5 +36,10 @@ class Livro(models.Model):
         if self.status == True:
             self.status = False
             return True
-        else:
-            return False
+        return False
+
+    def devolver_livro(self):
+        if self.status == False:
+            self.status = True
+            return True
+        return False

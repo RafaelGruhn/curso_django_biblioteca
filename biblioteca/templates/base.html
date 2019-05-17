@@ -58,6 +58,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'home' %}"><b>Home</b></a>
             </li>
+            {% if user.is_staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'admin:index' %}"><b>Admin</b></a>
+            </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'cadastroUsuario' %}"><b>Cadastro de Usuario</b></a>
             </li>
@@ -66,8 +71,15 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'listarUsuarios' %}"><b>Listar Usuarios</b></a>
-            </li>            
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}"><b>Sair do Sistema</b></a>
+            </li>
+            {% endif %}
+          
           </ul>
+
         </div>
       </div>
     </nav>
