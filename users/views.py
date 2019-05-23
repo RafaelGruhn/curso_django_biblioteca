@@ -3,12 +3,15 @@ from django.views.generic import ListView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, InvalidPage
+from django.contrib.auth.decorators import login_required, permission_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Usuario
 from biblioteca.forms import UsuarioForm, EditUsuarioForm, LoginForm
 
 # Create your views here.
 
+@login_required
 def CadastroUsuario(request):
     if request.method == 'POST':
         #Cria o formulário com os dados preenchidos 
@@ -39,30 +42,14 @@ class ListarUsuarios(ListView):
     def get_queryset(self):
         return Usuario.objects.all()
 
-    
-def EditarUsuario(request, pk):
 
-    if request.method == 'POST':
-        #Cria o formulário com os dados preenchidos 
-        formUsuario = EditUsuarioForm(request.POST)
-        #Verifica se o formulário é válido
-        if formUsuario.is_valid():
-            usuario = Usuario()
-            usuario = formUsuario.save(commit = False)
-            usuario.pk = request.POST["pk"]
-            usuario.set_password(request.POST["password"])
-            print(usuario.pk)
-            usuario.update()
-            return redirect("listarUsuarios")
-        
-        return render(request, 'usuarios/editarUsuario.html', {"form": EditUsuarioForm(request.POST), 'pk': request.POST["pk"]})
-
-    else:
-        usuario = get_object_or_404(Usuario, pk = pk)
-        context = {"form": EditUsuarioForm(instance = usuario), 'pk': pk}
-        return render(request, 'usuarios/editarUsuario.html', context)
+class EditarUsuario(UpdateView):
+    model = Usuario
+    form_class = EditUsuarioForm
+    template_name = "usuarios/editarUsuario.html"
 
 
+@login_required
 def ListarLivrosUsuario(request):
     ### Lista de livros locados pelo usuario atual
     user = get_object_or_404(Usuario, pḱ = request.user.pk)

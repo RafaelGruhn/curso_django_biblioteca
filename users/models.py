@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 
+from django.urls import reverse
+
 # Create your models here.
 
 class Usuario(AbstractBaseUser):
@@ -12,3 +14,7 @@ class Usuario(AbstractBaseUser):
     modify_on = models.DateField("Modificado em", auto_now = True, null = True)
 
     USERNAME_FIELD = 'username'
+
+    def get_absolute_url(self):
+        return reverse("editarUsuario", kwargs={"pk": self.pk})
+    

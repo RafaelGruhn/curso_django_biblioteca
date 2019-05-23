@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, InvalidPage
+from django.contrib.auth.decorators import login_required, permission_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 
 from livros import models
 
@@ -7,7 +10,7 @@ from biblioteca.forms import LivroForm
 from users.models import Usuario
 
 # Create your views here.
-
+@login_required
 def home(request):
     livros = models.Livro.objects.all()
     page = request.GET.get("page", 1)
@@ -20,8 +23,13 @@ def home(request):
     return render(request, "home.html", {"livros": livros2})
 
 
-def CadastroLivro(request):
-    if request.method == "POST":
+class CadastroLivro(CreateView):
+
+    model = Usuario
+    form_class = LivroForm
+    template_name = "livros/cadastroLivro.html"
+
+""" if request.method == "POST":
         #Cria o formulário com os dados preenchidos 
         formLivro = LivroForm(request.POST)
 
@@ -35,6 +43,7 @@ def CadastroLivro(request):
 
     else:
         return render(request, "livros/cadastroLivro.html", {'form': LivroForm()})
+"""
 
 
 def EditarLivro(request, pk):
@@ -60,12 +69,13 @@ def EditarLivro(request, pk):
         livro = get_object_or_404(models.Livro, pk=pk)
         return render(request, "livros/editarLivro.html", {'form': LivroForm(instance = livro), 'pk': livro.pk})
 
+@login_required
 def ExcluirLivro(request, pk):
     livro = get_object_or_404(models.Livro, pk=pk)
     livro.delete()
     return redirect("home")
 
-
+@login_required
 def ReservarLivro(request, pk):
     livro = get_object_or_404(models.Livro, pk=pk)
     user = get_object_or_404(Usuario, pk=request.user.pk)
@@ -77,7 +87,7 @@ def ReservarLivro(request, pk):
         return redirect("lista_livros_usuario")
     return redirect("home")
 
-
+@login_required
 def DevolverLivro(request, pk):
     livro = get_object_or_404(models.Livro, pk=pk)
     user = get_object_or_404(Usuario, pk=request.user.pk)

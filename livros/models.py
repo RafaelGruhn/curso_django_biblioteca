@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from django.urls import reverse
 
 from users.models import Usuario
 # Create your models here.
@@ -43,3 +44,7 @@ class Livro(models.Model):
             self.status = True
             return True
         return False
+    
+    def get_absolute_url(self):
+        return reverse("cadastrarLivro", kwargs={"pk": self.pk})
+    
