@@ -30,7 +30,7 @@ urlpatterns = [
     path('users/listar_livros/', ListarLivrosUsuario, name='lista_livros_usuario'),
     path('livros/cadastro_livro/', CadastroLivro.as_view(), name='cadastroLivro'),
     path('livros/<int:pk>/editar_livro/', EditarLivro, name='editarLivro'),
-    path('livros/<int:pk>/excluir/',ExcluirLivro, name='excluirLivro'),
+    path('livros/<int:pk>/excluir/', ExcluirLivro.as_view(), name='excluirLivro'),
     path('livros/<int:pk>/reservar_livro/', ReservarLivro, name='reservarLivro'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls'))

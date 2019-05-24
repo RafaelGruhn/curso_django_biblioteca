@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from users.models import Usuario
 # Create your models here.
@@ -26,7 +27,7 @@ class Livro(models.Model):
     status = models.BooleanField("Retirado: ", choices = CHOICES_LIVRO_STATUS)
     autor = models.ForeignKey(Autor, related_name = 'livros',on_delete = models.PROTECT)
     user = models.ForeignKey(
-        Usuario, related_name = 'livros_retirados',
+        User, related_name = 'livros_retirados',
         verbose_name="Usuario", blank = True, null = True,
         on_delete=models.PROTECT)
 
@@ -44,7 +45,7 @@ class Livro(models.Model):
             self.status = True
             return True
         return False
-    
+
     def get_absolute_url(self):
-        return reverse("cadastrarLivro", kwargs={"pk": self.pk})
+        return reverse("home")
     

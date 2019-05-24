@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, InvalidPage
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.urls import reverse_lazy
 
 from livros import models
 
@@ -25,9 +26,10 @@ def home(request):
 
 class CadastroLivro(CreateView):
 
-    model = Usuario
+    model = models.Livro
     form_class = LivroForm
     template_name = "livros/cadastroLivro.html"
+    success_url = "../../home/"
 
 """ if request.method == "POST":
         #Cria o formulário com os dados preenchidos 
@@ -69,18 +71,17 @@ def EditarLivro(request, pk):
         livro = get_object_or_404(models.Livro, pk=pk)
         return render(request, "livros/editarLivro.html", {'form': LivroForm(instance = livro), 'pk': livro.pk})
 
-@login_required
-def ExcluirLivro(request, pk):
-    livro = get_object_or_404(models.Livro, pk=pk)
-    livro.delete()
-    return redirect("home")
+class ExcluirLivro(DeleteView):
+    model = models.Livro
+    success_url = reverse_lazy("home")
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 @login_required
 def ReservarLivro(request, pk):
     livro = get_object_or_404(models.Livro, pk=pk)
-    user = get_object_or_404(Usuario, pk=request.user.pk)
     if livro.retirar_livro():
-        livro.usuario = user
+        livro.usuario = request.user
         livro.status = False
         livro.save()
         ### Lista de livros locados pelo usuario atual
@@ -90,17 +91,12 @@ def ReservarLivro(request, pk):
 @login_required
 def DevolverLivro(request, pk):
     livro = get_object_or_404(models.Livro, pk=pk)
-    user = get_object_or_404(Usuario, pk=request.user.pk)
-    if livro.usuario == user:
+    if livro.usuario == request.user:
         if livro.devolver_livro():
-            livro.usuario = None
+            livro.user = None
             livro.save()
             return redirect("lista_livros_usuario")
     return redirect("home")
-
-
-
-        
 
 
 
