@@ -2,11 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, InvalidPage
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
 from django.urls import reverse_lazy
 
 from livros import models
-
 from biblioteca.forms import LivroForm
 from users.models import Usuario
 
@@ -48,34 +46,20 @@ class CadastroLivro(CreateView):
 """
 
 
-def EditarLivro(request, pk):
-    if request.method == "POST":
-        #Cria o formulário com os dados preenchidos 
-        formLivro = LivroForm(request.POST)
+class  EditarLivro(UpdateView):
+    model = models.Livro
+    form_class = LivroForm
+    template_name = "livros/editarLivro.html"
+    success_url = "../../home/"
 
-        #Verifica se o formulário é válido
-        if formLivro.is_valid():
-            livro = models.Livro
-            livro = formLivro.save(commit = False)
-            livro.pk = request.POST['pk']
-            livro.save()
-            return redirect("home")
-        
-        else:
-            return render(request, 'livros/editarLivro.html', {"form": LivroForm(request.POST)})
-
-    else:
-        #livros = models.Livro.objects.all().filter(pk = pk)
-        #for l in livros:
-        #    livro = l
-        livro = get_object_or_404(models.Livro, pk=pk)
-        return render(request, "livros/editarLivro.html", {'form': LivroForm(instance = livro), 'pk': livro.pk})
 
 class ExcluirLivro(DeleteView):
     model = models.Livro
     success_url = reverse_lazy("home")
+    
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
 
 @login_required
 def ReservarLivro(request, pk):
